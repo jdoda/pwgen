@@ -67,15 +67,12 @@ public class PWGen extends Activity {
 				if (passphrase.equals(confirm)) {
 					try {
 						byte[] hash = (passphrase + nickname).getBytes("UTF-8");
-						MessageDigest digester = MessageDigest
-								.getInstance("SHA256");
+						MessageDigest digester = MessageDigest.getInstance("SHA256");
 						for (int i = 0; i < ROUNDS; i++) {
 							hash = digester.digest(hash);
 						}
-						String password = Base64.encodeBytes(hash,
-								Base64.URL_SAFE);
-						passwordEditText.setText(password.subSequence(0,
-								PASS_LENGTH));
+						String password = Base64.encodeBytes(hash, Base64.URL_SAFE);
+						passwordEditText.setText(password.subSequence(0, PASS_LENGTH));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
