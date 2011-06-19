@@ -76,12 +76,8 @@ public class PWGen extends Activity {
 								Base64.URL_SAFE);
 						passwordEditText.setText(password.subSequence(0,
 								PASS_LENGTH));
-					} catch (NoSuchAlgorithmException e) {
-						passwordEditText.setText("Crap");
-					} catch (UnsupportedEncodingException e) {
-						passwordEditText.setText("Double Crap");
-					} catch (IOException e) {
-						passwordEditText.setText("Triple Crap");
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				} else {
 					passwordEditText.setText("Passphrases don't match");
