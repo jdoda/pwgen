@@ -7,14 +7,8 @@ function getPassword() {
     if (passphrase != confirm) {
         password.value = ("Passphrases didn't match");
     } else {
-        var input = passphrase + nickname;
-        var hasher = new jsSHA(input, "ASCII");
-        for (var i = 0; i < 999; i++) {
-            hasher = new jsSHA(hasher.getHash("SHA-256", "HEX"), "HEX");
-        }
-        var output = hasher.getHash("SHA-256", "B64").slice(0, 12);
-        output = output.replace("+", "-");
-        output = output.replace("/", "_");
+        bits = sjcl.misc.pbkdf2(nickname, passphrase)
+        output = sjcl.codec.base64.fromBits(bits)
         password.value = output;
     }
 }
