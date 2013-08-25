@@ -1,0 +1,8 @@
+{
+    "*" : {
+        "length" : "16",
+        "charset" : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890`~!@#$%^&*()-=_+[]{}\\|;':\",.<>/?",
+        "required" : "",
+        "index" : "0"
+    }
+}

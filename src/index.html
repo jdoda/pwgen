@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html manifest="pwgen.appcache">
     <head>
         <script type="text/javascript" src="sjcl/sjcl.js"></script>
         <script type="text/javascript" src="js/pwgen.js"></script>
@@ -15,12 +15,12 @@
                 <td><input id="confirm" type="password"></td>
             </tr>
             <tr>
-                <td><label for="nickname">Nickname</label></td>
-                <td><input id="nickname" type="text"></td>
+                <td><label for="domain">Domain</label></td>
+                <td><input id="domain" type="text"></td>
             </tr>
             <tr>
                 <td><label for=password>Password</label></td> 
-                <td><input id="password" type="text"></td>
+                <td><input id="password" type="text" readonly></td>
             </tr>
             <tr>
                 <td><button id="generate">Generate Password</button></td>

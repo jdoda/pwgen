@@ -1,0 +1,7 @@
+CACHE MANIFEST
+# v2
+
+index.html
+defaults.json
+js/pwgen.js
+sjcl/sjcl.js
