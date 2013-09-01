@@ -4,5 +4,12 @@
         "charset" : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890`~!@#$%^&*()-=_+[]{}\\|;':\",.<>/?",
         "required" : "",
         "index" : "0"
+    },
+    
+    "td.com" : {
+        "length" : "8",
+        "charset" : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890",
+        "required" : "",
+        "index" : "0"
     }
 }
