@@ -1,7 +1,6 @@
 CACHE MANIFEST
-# v2
+# v4
 
 index.html
-defaults.json
 js/pwgen.js
 sjcl/sjcl.js

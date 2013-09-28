@@ -4,24 +4,40 @@
     var $ = document.getElementById.bind(document);
 
     var SETTINGS = ["length", "charset", "required", "index"];
-    var DEFAULTS;
+    var DEFAULTS = {
+        "*" : {
+            "length" : "16",
+            "charset" : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890`~!@#$%^&*()-=_+[]{}\\|;':\",.<>/?",
+            "required" : "",
+            "index" : "0"
+        },
+        
+        "td.com" : {
+            "length" : "8",
+            "charset" : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890",
+            "required" : "",
+            "index" : "0"
+        }
+    }
 
+    var hexToShort = function (hex) {
+        return (parseInt(hex.charAt(0), 16) << 12) + (parseInt(hex.charAt(1), 16) << 8) + (parseInt(hex.charAt(2), 16) << 4) + (parseInt(hex.charAt(3), 16));
+    };
+    
     var generatePassword = function (passphrase, domain, index, length, charset, required) {
-        var bits = sjcl.misc.pbkdf2(passphrase, domain + index);
+        var bits = sjcl.misc.pbkdf2(passphrase, sjcl.codec.utf8String.toBits(domain + index), 10000);
         var hex = sjcl.codec.hex.fromBits(bits), output = "", i;
 
-        var highBits, lowBits, byte, currentCharset;
-        for (i = 0; i < hex.length; i += 2) {
-            if (i / 2 < required.length) {
-                currentCharset = required[i / 2];
+        var currentCharset;
+        for (i = 0; i < hex.length; i += 4) {
+            if (i / 4 < required.length && 
+                    required[i / 4].length > 0) {
+                currentCharset = required[i / 4];
             } else {
                 currentCharset = charset;
             }
 
-            highBits = parseInt(hex.charAt(i), 16) << 4;
-            lowBits = parseInt(hex.charAt(i + 1), 16);
-            byte = highBits + lowBits;
-            output += currentCharset.charAt(Math.floor(byte * currentCharset.length / 256));
+            output += currentCharset.charAt(Math.floor(hexToShort(hex.substr(i, 4)) * currentCharset.length / Math.pow(2, 16)));
         }
         return output.substr(0, length);
     };
@@ -72,16 +88,7 @@
         SETTINGS.forEach(function (setting) {
             $(setting).addEventListener("input", saveDomainSettingForInput);
         });
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'defaults.json', true);
-        xhr.onload = function(e) {
-            if (this.status == 200) {
-                DEFAULTS = JSON.parse(this.responseText);
-                loadAllDomainSettings();
-            }
-        };
-        xhr.send();
+        loadAllDomainSettings();
     });
 }());
 
