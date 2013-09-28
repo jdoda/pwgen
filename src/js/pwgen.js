@@ -11,35 +11,35 @@
             "required" : "",
             "index" : "0"
         },
-        
+
         "td.com" : {
             "length" : "8",
             "charset" : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890",
             "required" : "",
             "index" : "0"
         }
-    }
-
-    var hexToShort = function (hex) {
-        return (parseInt(hex.charAt(0), 16) << 12) + (parseInt(hex.charAt(1), 16) << 8) + (parseInt(hex.charAt(2), 16) << 4) + (parseInt(hex.charAt(3), 16));
     };
-    
-    var generatePassword = function (passphrase, domain, index, length, charset, required) {
-        var bits = sjcl.misc.pbkdf2(passphrase, sjcl.codec.utf8String.toBits(domain + index), 10000);
-        var hex = sjcl.codec.hex.fromBits(bits), output = "", i;
 
-        var currentCharset;
-        for (i = 0; i < hex.length; i += 4) {
-            if (i / 4 < required.length && 
-                    required[i / 4].length > 0) {
-                currentCharset = required[i / 4];
+    var generatePassword = function (passphrase, domain, index, length, charset, required) {
+        var bits = sjcl.misc.pbkdf2(passphrase, sjcl.codec.utf8String.toBits(domain + index), 10000, length * 32);
+        var hex = sjcl.codec.hex.fromBits(bits);
+
+        var ints = [], i;
+        for (i = 0; i < hex.length; i += 8) {
+            ints.push(Math.floor(parseInt(hex.substr(i, 8), 16)));
+        }
+
+        var currentCharset, output = "", j;
+        for (j = 0; j < ints.length; j += 1) {
+            if (j < required.length && required[j].length > 0) {
+                currentCharset = required[j];
             } else {
                 currentCharset = charset;
             }
 
-            output += currentCharset.charAt(Math.floor(hexToShort(hex.substr(i, 4)) * currentCharset.length / Math.pow(2, 16)));
+            output += currentCharset.charAt(Math.floor(ints[j] * currentCharset.length / Math.pow(2, 32)));
         }
-        return output.substr(0, length);
+        return output;
     };
 
     var loadDomainSetting = function (domain, setting) {
