@@ -21,7 +21,7 @@
     };
 
     var generatePassword = function (passphrase, domain, index, length, charset, required) {
-        var bits = sjcl.misc.pbkdf2(passphrase, sjcl.codec.utf8String.toBits(domain + index), 10000, length * 32);
+        var bits = sjcl.misc.pbkdf2(passphrase, domain + index, 10000, length * 32);
         var hex = sjcl.codec.hex.fromBits(bits);
 
         var ints = [], i;
