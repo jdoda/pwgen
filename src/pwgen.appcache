@@ -4,3 +4,4 @@ CACHE MANIFEST
 index.html
 js/pwgen.js
 sjcl/sjcl.js
+css/bootstrap.min.css
