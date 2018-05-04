@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" manifest="pwgen.appcache">
     <head>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <script type="text/javascript" src="sjcl/sjcl.js"></script>
         <script type="text/javascript" src="js/pwgen.js"></script>
     </head>
     <body>
@@ -11,39 +11,41 @@
             <h1>PWGen</h1>
             <div class="form-group">
                 <label for="passphrase">Passphrase</label> 
-                <input class="form-control input-lg" id="passphrase" type="password" inputmode="verbatim">
+                <input class="form-control input-lg" id="passphrase" type="password">
             </div>
             <div class="form-group">
                 <label for="confirm">Confirm</label> 
-                <input class="form-control input-lg" id="confirm" type="password" inputmode="verbatim">
+                <input class="form-control input-lg" id="confirm" type="password">
             </div>
             <div class="form-group">
                 <label for="domain">Domain</label>
-                <input class="form-control input-lg" id="domain" type="text" inputmode="verbatim">
+                <input class="form-control input-lg" id="domain" type="text" autocomplete="off">
             </div>
+            <details>
+                <summary>Domain Settings</summary>
+                <div class="form-group">
+                    <label for="length">Length</lable>
+                    <input class="form-control input-sm" id="length" type="number">
+                </div>
+                <div class="form-group">
+                    <label for="charset">Permitted Characters</label>
+                    <input class="form-control input-sm" id="charset" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="required">Required Characters</label>
+                    <input class="form-control input-sm" id="required" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="index">Index</label>
+                    <input class="form-control input-sm" id="index" type="number">
+                </div>
+            </details>
             <div class="form-group">
                 <label for=password>Password</label> 
                 <input class="form-control input-lg" id="password" type="text" readonly>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary btn-lg" id="generate">Generate Password</button>
-            </div>
-            <h4>Domain Settings</h4>
-            <div class="form-group">
-                <label for="length">Length</lable>
-                <input class="form-control input-sm" id="length" type="number">
-            </div>
-            <div class="form-group">
-                <label for="charset">Permitted Characters</label>
-                <input class="form-control input-sm" id="charset" type="text" inputmode="verbatim">
-            </div>
-            <div class="form-group">
-                <label for="required">Required Characters</label>
-                <input class="form-control input-sm" id="required" type="text" inputmode="verbatim">
-            </div>
-            <div class="form-group">
-                <label for="index">Index</label>
-                <input class="form-control input-sm" id="index" type="number">
             </div>
         </div>
     </body>

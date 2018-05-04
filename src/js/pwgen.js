@@ -1,48 +1,66 @@
 (function () {
     "use strict";
 
-    var $ = document.getElementById.bind(document);
+    const $ = document.getElementById.bind(document);
 
-    var SETTINGS = ["length", "charset", "required", "index"];
-    var DEFAULTS = {
+    const SETTINGS = ["length", "charset", "required", "index"];
+    const DEFAULTS = {
         "*" : {
-            "length" : "16",
-            "charset" : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890`~!@#$%^&*()-=_+[]{}\\|;':\",.<>/?",
-            "required" : "",
-            "index" : "0"
-        },
-
-        "td.com" : {
-            "length" : "8",
+            "length" : "14",
             "charset" : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890",
             "required" : "",
             "index" : "0"
         }
     };
 
-    var generatePassword = function (passphrase, domain, index, length, charset, required) {
-        var bits = sjcl.misc.pbkdf2(passphrase, domain + index, 10000, length * 32);
-        var hex = sjcl.codec.hex.fromBits(bits);
+    let generatePassword = (passphrase, domain, index, length, charset, required) => {
+        let encoder = new TextEncoder();
+        
+        window.crypto.subtle.importKey(
+            "raw",
+            encoder.encode(passphrase),
+            {
+                name: "PBKDF2",
+            },
+            false,
+            ["deriveBits"]
+        )
+        .then((key) => {
+            return window.crypto.subtle.deriveBits(
+                {
+                    name: "PBKDF2",
+                    salt: encoder.encode(domain),
+                    iterations: 100000,
+                    hash: {name: "SHA-256"},
+                },
+                key,
+                length * 32
+            )
+        })
+        .then((bits) => {
+            let ints = new Uint32Array(bits);
+            let currentCharset = "";
+            let output = "";
+            
+            for (let j = 0; j < ints.length; j += 1) {
+                if (j < required.length && required[j].length > 0) {
+                    currentCharset = required[j];
+                } else {
+                    currentCharset = charset;
+                }
 
-        var ints = [], i;
-        for (i = 0; i < hex.length; i += 8) {
-            ints.push(Math.floor(parseInt(hex.substr(i, 8), 16)));
-        }
-
-        var currentCharset, output = "", j;
-        for (j = 0; j < ints.length; j += 1) {
-            if (j < required.length && required[j].length > 0) {
-                currentCharset = required[j];
-            } else {
-                currentCharset = charset;
+                output += currentCharset.charAt(Math.floor(ints[j] * currentCharset.length / Math.pow(2, 32)));
             }
-
-            output += currentCharset.charAt(Math.floor(ints[j] * currentCharset.length / Math.pow(2, 32)));
-        }
-        return output;
+            
+            $("password").value = output
+            $("password").select();
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     };
 
-    var loadDomainSetting = function (domain, setting) {
+    let loadDomainSetting = (domain, setting) => {
         var value = localStorage.getItem("pwgen." + domain + "." + setting);
         if (value === null) {
             if (DEFAULTS.hasOwnProperty(domain)) {
@@ -54,13 +72,13 @@
         return value;
     };
 
-    var loadAllDomainSettings = function () {
+    let loadAllDomainSettings = () => {
         SETTINGS.forEach(function (setting) {
             $(setting).value = loadDomainSetting($("domain").value.trim(), setting);
         });
     };
 
-    var saveDomainSetting = function (domain, setting, value) {
+    let saveDomainSetting = (domain, setting, value) => {
         if (value === DEFAULTS[setting]) {
             localStorage.removeItem("pwgen." + domain + "." + setting);
         } else {
@@ -68,24 +86,23 @@
         }
     };
 
-    var saveDomainSettingForInput = function () {
+    let saveDomainSettingForInput = () => {
         saveDomainSetting($("domain").value.trim(), this.id, this.value);
     };
 
-    var onGenerateButtonClick = function () {
+    let onGenerateButtonClick = () => {
         if ($("passphrase").value !== $("confirm").value) {
             $("password").value = ("Passphrases didn't match");
         } else {
-            $("password").value = generatePassword($("passphrase").value, $("domain").value.trim(), $("index").value.trim(), parseInt($("length").value, 10), $("charset").value.trim(), $("required").value.trim().split(/,\s*/));
-            $("password").select();
+            generatePassword($("passphrase").value, $("domain").value.trim(), $("index").value.trim(), parseInt($("length").value, 10), $("charset").value.trim(), $("required").value.trim().split(/,\s*/));
         }
     };
 
     // Hook up callbacks
-    window.addEventListener("load", function () {
+    window.addEventListener("load", () => {
         $("generate").addEventListener("click", onGenerateButtonClick);
         $("domain").addEventListener("input", loadAllDomainSettings);
-        SETTINGS.forEach(function (setting) {
+        SETTINGS.forEach((setting) => {
             $(setting).addEventListener("input", saveDomainSettingForInput);
         });
         loadAllDomainSettings();
