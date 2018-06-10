@@ -1,0 +1,13 @@
+{
+    "name": "PWGen",
+    "short_name": "PWGen",
+    "description": "Generates passwords.",    
+    "background_color": "grey",
+    "display": "standalone",
+    "icons": [{
+        "src": "icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    }],
+    "start_url": "/index.html"
+}

@@ -1,52 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" manifest="pwgen.appcache">
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <script type="text/javascript" src="js/pwgen.js"></script>
+        <link rel="stylesheet" href="/app.css"  media="screen">
+        <link rel="manifest" href="/app.webmanifest">
+        <script type="text/javascript" src="/app.js"></script>
     </head>
     <body>
-        <div class="container">
+        <div class="form">
             <h1>PWGen</h1>
             <div class="form-group">
-                <label for="passphrase">Passphrase</label> 
-                <input class="form-control input-lg" id="passphrase" type="password">
+                <label class="form-label" for="passphrase">Passphrase</label> 
+                <input class="form-control" id="passphrase" type="password" required>
             </div>
             <div class="form-group">
-                <label for="confirm">Confirm</label> 
-                <input class="form-control input-lg" id="confirm" type="password">
+                <label class="form-label" for="confirm">Confirm</label> 
+                <input class="form-control" id="confirm" type="password" required>
             </div>
             <div class="form-group">
-                <label for="domain">Domain</label>
-                <input class="form-control input-lg" id="domain" type="text" autocomplete="off">
+                <label class="form-label" for="domain">Domain</label>
+                <input class="form-control" id="domain" type="text" autocomplete="off" spellcheck="false" required>
             </div>
             <details>
                 <summary>Domain Settings</summary>
-                <div class="form-group">
-                    <label for="length">Length</lable>
-                    <input class="form-control input-sm" id="length" type="number">
-                </div>
-                <div class="form-group">
-                    <label for="charset">Permitted Characters</label>
-                    <input class="form-control input-sm" id="charset" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="required">Required Characters</label>
-                    <input class="form-control input-sm" id="required" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="index">Index</label>
-                    <input class="form-control input-sm" id="index" type="number">
+                <div class="form" id="domain-settings">
+                    <div class="form-group">
+                        <label class="form-label" for="length">Length</label>
+                        <input class="form-control" id="length" type="number">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="charset">Permitted Characters</label>
+                        <input class="form-control" id="charset" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="required">Required Characters</label>
+                        <input class="form-control" id="required" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="index">Index</label>
+                        <input class="form-control" id="index" type="number">
+                    </div>
                 </div>
             </details>
             <div class="form-group">
-                <label for=password>Password</label> 
-                <input class="form-control input-lg" id="password" type="text" readonly>
+                <label class="form-label" for="password">Password</label> 
+                <input class="form-control" id="password" type="text" readonly>
             </div>
-            <div class="form-group">
-                <button class="btn btn-primary btn-lg" id="generate">Generate Password</button>
-            </div>
+            <button class="form-btn" id="generate">Generate Password</button>
         </div>
     </body>
 </html>
