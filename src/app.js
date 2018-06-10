@@ -11,6 +11,9 @@ const DEFAULTS = {
 
 let generatePassword = (passphrase, domain, index, length, charset, required) => {
     let encoder = new TextEncoder();
+    if (index !== "0") {
+        domain += index;
+    }
     
     window.crypto.subtle.importKey(
         "raw",
