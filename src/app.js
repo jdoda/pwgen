@@ -71,7 +71,7 @@ let loadDomainSetting = (domain, setting) => {
     return value;
 };
 
-let loadAllDomainSettings = (event) => {
+let loadAllDomainSettings = () => {
     SETTINGS.forEach(function (setting) {
         $(setting).value = loadDomainSetting($("domain").value.trim(), setting);
     });
@@ -85,29 +85,36 @@ let saveDomainSetting = (domain, setting, value) => {
     }
 };
 
-let saveDomainSettingForInput = (event) => {
-    saveDomainSetting($("domain").value.trim(), event.currentTarget.id, event.currentTarget.value);
-};
-
-let onGenerateButtonClick = (event) => {
-    if ($("passphrase").value !== $("confirm").value) {
-        $("password").value = ("Passphrases didn't match");
-    } else {
-        generatePassword($("passphrase").value, $("domain").value.trim(), $("index").value.trim(), parseInt($("length").value, 10), $("charset").value.trim(), $("required").value.trim().split(/,\s*/));
-    }
-};
-
 // Hook up callbacks
 if('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js');
 };
 
-window.addEventListener("load", () => {
-    $("generate").addEventListener("click", onGenerateButtonClick);
-    $("domain").addEventListener("input", loadAllDomainSettings);
-    SETTINGS.forEach((setting) => {
-        $(setting).addEventListener("input", saveDomainSettingForInput);
+window.addEventListener("load", (event) => {
+    $("generate").addEventListener("click", (event) => {
+        if ($("passphrase").value !== $("confirm").value) {
+            $("password").value = ("Passphrases didn't match");
+        } else {
+            generatePassword(
+                $("passphrase").value, 
+                $("domain").value.trim(), 
+                $("index").value.trim(), 
+                parseInt($("length").value, 10), 
+                $("charset").value.trim(), 
+                $("required").value.trim().split(/,\s*/));
+        }
     });
+    
+    $("domain").addEventListener("input", (event) => {
+        loadAllDomainSettings();
+    });
+    
+    SETTINGS.forEach((setting) => {
+        $(setting).addEventListener("input", (event) => {
+            saveDomainSetting($("domain").value.trim(), event.currentTarget.id, event.currentTarget.value);
+        });
+    });
+    
     loadAllDomainSettings();
 });
 
