@@ -71,7 +71,7 @@ let loadDomainSetting = (domain, setting) => {
     return value;
 };
 
-let loadAllDomainSettings = () => {
+let loadAllDomainSettings = (event) => {
     SETTINGS.forEach(function (setting) {
         $(setting).value = loadDomainSetting($("domain").value.trim(), setting);
     });
@@ -85,11 +85,11 @@ let saveDomainSetting = (domain, setting, value) => {
     }
 };
 
-let saveDomainSettingForInput = () => {
-    saveDomainSetting($("domain").value.trim(), this.id, this.value);
+let saveDomainSettingForInput = (event) => {
+    saveDomainSetting($("domain").value.trim(), event.currentTarget.id, event.currentTarget.value);
 };
 
-let onGenerateButtonClick = () => {
+let onGenerateButtonClick = (event) => {
     if ($("passphrase").value !== $("confirm").value) {
         $("password").value = ("Passphrases didn't match");
     } else {
