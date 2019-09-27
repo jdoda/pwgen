@@ -1,4 +1,4 @@
-//4398utp3qjaljrhfsjdhfsde
+//34rggjofdjgodfj
 
 const CACHE_NAME = 'pwgen-v1';
 const APP_FILES = [

@@ -14,15 +14,15 @@
             <h1>PWGen</h1>
             <div class="form-group">
                 <label class="form-label" for="passphrase">Passphrase</label> 
-                <input class="form-control" id="passphrase" type="password" required>
+                <input class="form-control" id="passphrase" type="password" autocomplete="current-password" autofocus="true" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="confirm">Confirm</label> 
-                <input class="form-control" id="confirm" type="password" required>
+                <input class="form-control" id="confirm" type="password" autocomplete="current-password" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="domain">Domain</label>
-                <input class="form-control" id="domain" type="text" autocomplete="off" spellcheck="false" required>
+                <input class="form-control" id="domain" type="text" autocapitalize="off" spellcheck="false" inputmode="url" required>
             </div>
             <details>
                 <summary>Domain Settings</summary>
@@ -45,11 +45,11 @@
                     </div>
                 </div>
             </details>
+            <button class="form-btn" id="generate">Generate Password</button>
             <div class="form-group">
                 <label class="form-label" for="password">Password</label> 
                 <input class="form-control" id="password" type="text" readonly>
             </div>
-            <button class="form-btn" id="generate">Generate Password</button>
         </div>
     </body>
 </html>

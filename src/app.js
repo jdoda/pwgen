@@ -59,6 +59,18 @@ let generatePassword = (passphrase, domain, index, length, charset, required) =>
     });
 };
 
+let validatePassphrase = () => {
+    if ($("passphrase").value !== $("confirm").value) {
+        $("confirm").setCustomValidity("Passphrases didn't match");
+        $("confirm").checkValidity();
+        $("generate").disabled = true;
+    } else {
+        $("confirm").setCustomValidity("");
+        $("confirm").checkValidity();
+        $("generate").disabled = false;
+    }
+};
+
 let loadDomainSetting = (domain, setting) => {
     var value = localStorage.getItem("pwgen." + domain + "." + setting);
     if (value === null) {
@@ -103,6 +115,14 @@ window.addEventListener("load", (event) => {
                 $("charset").value.trim(), 
                 $("required").value.trim().split(/,\s*/));
         }
+    });
+    
+    $("passphrase").addEventListener("input", (event) => {
+        validatePassphrase();
+    });
+    
+    $("confirm").addEventListener("input", (event) => {
+        validatePassphrase();
     });
     
     $("domain").addEventListener("input", (event) => {
